@@ -3,7 +3,7 @@
 // @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
 // @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。
-// @version      1.0.5.5
+// @version      1.0.5.6
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
@@ -5388,6 +5388,16 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     }
     document.querySelectorAll('.mw-excel-item-name').forEach(el => el.remove());
     document.querySelectorAll('.mw-excel-svg-label').forEach(el => el.remove());
+
+    // 清理 1.0.5.3 及更早方案可能遗留在 #root 上的固定布局样式。
+    const staleRoot = document.getElementById('root');
+    if (staleRoot) {
+      const s = staleRoot.style;
+      if (s.position === 'fixed' && s.top && s.bottom === '24px' && s.width === '100%') {
+        ['position', 'top', 'right', 'bottom', 'left', 'width', 'height',
+         'margin', 'z-index', 'overflow'].forEach(name => s.removeProperty(name));
+      }
+    }
 
     const container = document.getElementById('mw-excel-fullscreen');
 
