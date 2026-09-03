@@ -3,7 +3,7 @@
 // @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
 // @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。
-// @version      1.0.5.8
+// @version      1.0.5.9
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
@@ -784,8 +784,8 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     .mw-excel-skin-active #root *:not(img):not(svg):not(canvas):not(video) {
       background-color: var(--mw-bg, transparent) !important;
       background-image: none !important;
-      color: #000 !important;
-      -webkit-text-fill-color: #000 !important;
+      color: #30343b !important;
+      -webkit-text-fill-color: #30343b !important;
       -webkit-background-clip: border-box !important;
       background-clip: border-box !important;
       border-color: #b0b0b0 !important;
@@ -828,8 +828,8 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     html.mw-excel-skin-active #root .GamePage_headerPanel__1T_cA {
       background-color: var(--mw-bg, #fff) !important;
       background-image:
-        repeating-linear-gradient(to right,  transparent 0 63px, #d4d4d4 63px 64px),
-        repeating-linear-gradient(to bottom, transparent 0 20px, #d4d4d4 20px 21px) !important;
+        repeating-linear-gradient(to right,  transparent 0 63px, #c7ccd3 63px 64px),
+        repeating-linear-gradient(to bottom, transparent 0 20px, #c7ccd3 20px 21px) !important;
       background-size: 64px 21px, 64px 21px !important;
       background-repeat: repeat, repeat !important;
       background-position: 0 0, 0 0 !important;
@@ -1150,12 +1150,12 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     /* ★ 配色方案 CSS 变量（默认=原始白） */
     :root {
       --mw-bg: transparent;
-      --mw-bg-dark: #f0f0f0;
-      --mw-bg-darker: #e0e0e0;
-      --mw-bg-hover: #e6f3ff;
+      --mw-bg-dark: #e8ebef;
+      --mw-bg-darker: #dfe3e8;
+      --mw-bg-hover: #e7eef7;
     }
-    /* 默认白：Excel模式下用白色 */
-    .mw-excel-skin-active { --mw-bg: #fff; }
+    /* 默认柔和浅灰，降低长时间使用时的眩光 */
+    .mw-excel-skin-active { --mw-bg: #f3f5f7; }
     /* 护眼绿 */
     .mw-theme-green  { --mw-bg:#C7EDCC; --mw-bg-dark:#b3dfb8; --mw-bg-darker:#9fd4a5; --mw-bg-hover:#a8d8ad; }
     /* 浅灰 */
@@ -5365,7 +5365,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     const gameArea = document.getElementById('mw-excel-game-area');
     if (gameArea) {
       const colors = {
-        'default': '#fff', 'green': '#C7EDCC', 'gray': '#E8E8E8',
+        'default': '#F3F5F7', 'green': '#C7EDCC', 'gray': '#E8E8E8',
         'pink': '#FCE4EC', 'yellow': '#FFF8E1'
       };
       gameArea.style.background = colors[theme] || '#fff';
