@@ -3,7 +3,7 @@
 // @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
 // @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。
-// @version      1.0.5.2
+// @version      1.0.5.3
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
@@ -776,17 +776,13 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
     /* ★ 游戏 Excel 皮肤 */
     .mw-excel-skin-active #root {
-      position: fixed !important;
-      top: var(--mw-excel-header-height, 125px) !important;
-      right: 0 !important;
-      bottom: 24px !important;
-      left: 0 !important;
-      width: 100% !important;
+      /* 保持游戏原生布局，不修改定位、尺寸或滚动上下文。 */
+      position: static !important;
+      width: auto !important;
       height: auto !important;
       margin: 0 !important;
-      /* 低于 Excel 外壳；外壳本身 pointer-events:none，内容区仍可交互 */
-      z-index: 1999999 !important;
-      overflow: auto !important;
+      z-index: auto !important;
+      overflow: visible !important;
     }
     .mw-excel-skin-active #root,
     .mw-excel-skin-active #root *:not(img):not(svg):not(canvas):not(video) {
@@ -1989,7 +1985,6 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     // Excel mode
     excelMode: getSetting('excelMode', false),
     excelTheme: getSetting('excelTheme', 'tencent'), // tencent, wps, office
-    excelRootStyle: null,
 
     // toggle button drag
     toggleBtnPos: getSetting('toggleBtnPos', null),
@@ -3628,22 +3623,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
     excelContainer.querySelectorAll('.hld__excel-div').forEach(el => { el.style.display = 'block'; });
 
-    // 方案2：保留 #root 在原有 DOM 父节点中，仅临时定位到 Excel 内容区。
-    const gameRoot = document.getElementById('root');
-    const gameArea = document.getElementById('mw-excel-game-area');
-    if (gameRoot) {
-      state.excelRootStyle = gameRoot.getAttribute('style') || '';
-      gameRoot.style.setProperty('position', 'fixed', 'important');
-      gameRoot.style.setProperty('top', `${headerHeight}px`, 'important');
-      gameRoot.style.setProperty('right', '0', 'important');
-      gameRoot.style.setProperty('bottom', '24px', 'important');
-      gameRoot.style.setProperty('left', '0', 'important');
-      gameRoot.style.setProperty('width', '100%', 'important');
-      gameRoot.style.setProperty('height', 'auto', 'important');
-      gameRoot.style.setProperty('margin', '0', 'important');
-      gameRoot.style.setProperty('z-index', '1999999', 'important');
-      gameRoot.style.setProperty('overflow', 'auto', 'important');
-    }
+    // 方案2：完全保留 React #root 的原生 DOM 位置和布局上下文。
     excelContainer.style.setProperty('pointer-events', 'none', 'important');
     excelContainer.style.setProperty('--mw-excel-header-height', `${headerHeight}px`);
 
@@ -5406,14 +5386,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     document.querySelectorAll('.mw-excel-item-name').forEach(el => el.remove());
     document.querySelectorAll('.mw-excel-svg-label').forEach(el => el.remove());
 
-    // 方案2未移动 #root；恢复进入 Excel 模式前保存的原始样式。
-    const gameRoot = document.getElementById('root');
     const container = document.getElementById('mw-excel-fullscreen');
-    if (gameRoot && state.excelRootStyle !== null) {
-      if (state.excelRootStyle) gameRoot.setAttribute('style', state.excelRootStyle);
-      else gameRoot.removeAttribute('style');
-      state.excelRootStyle = null;
-    }
 
     document.documentElement.classList.remove('mw-excel-skin-active');
     document.documentElement.classList.remove('mw-theme-green','mw-theme-gray','mw-theme-pink','mw-theme-yellow');
