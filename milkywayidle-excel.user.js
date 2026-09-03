@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         MilkyWayIdle - Excel换肤
-// @name:zh-CN   MilkyWayIdle - Excel换肤
+// @name         MilkyWayIdle - Excel换肤增强版
+// @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
 // @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。
-// @version      1.0.5
+// @version      1.0.5.1
 // @author       xiaokeai
 // @copyright    400BadRequest
 // @license      MIT
@@ -23,8 +23,8 @@
 // @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/localforage/1.10.0/localforage.min.js#sha512=+BMamP0e7wn39JGL8nKAZ3yAQT2dL5oaXWr4ZYlTGkKOaoXM/Yj7c4oy50Ngz5yoUutAG17flueD4F6QpTlPng==
 // @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/echarts/5.3.0/echarts.min.js#sha512=dvHO84j/D1YX7AWkAPC/qwRTfEgWRHhI3n7J5EAqMwm4r426sTkcOs6OmqCtmkg0QXNKtiFa67Tp77JWCRRINg==
 
-// @downloadURL https://update.greasyfork.org/scripts/573318/MilkyWayIdle%20-%20Excel%E6%8D%A2%E8%82%A4.user.js
-// @updateURL https://update.greasyfork.org/scripts/573318/MilkyWayIdle%20-%20Excel%E6%8D%A2%E8%82%A4.meta.js
+// @downloadURL https://raw.githubusercontent.com/sunxiangyang/milkywayidle-excel-skin-enhanced/main/milkywayidle-excel.user.js
+// @updateURL https://raw.githubusercontent.com/sunxiangyang/milkywayidle-excel-skin-enhanced/main/milkywayidle-excel.user.js
 // ==/UserScript==
 
 const IMG_EXCEL_ICON = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAt1BMVEUAAABNw4BOxH9NxH9DtHFNxH9PxoJIv3tNxH5QxoFOxX9Nw4BQxoFAr21HuXdOxYBJvHlOxH////9SxYI8qGhOxX86pGZQx4FGwnpCwHdLw304vW/i9upRyYM1u20yu2vR795CsG8vumlIunc2vG7P79w/v3Tb8+Xu+fKm4r5XyIY7vnI5omTW8eEpuGXF7Na86c+E1qZdyotKwXtHuXZBrm4ftF3w+vTm9+6+6dC358ud3rhnzJFRjt3CAAAAEXRSTlMAcPyPS+QQVfiiYSshS/OlZtHVkl8AAAFjSURBVEjHzdbXcoMwEAVQ2wnGNQm7BoNccAhgintL/f/vigRhNGEgq7dwH4CXM6C7w0itxqc7uKvKo14rhppRFXP6PK4Ro55ZQ67WffVX9StB9pbNpNLoWj2xJpWm3fmTSKNOpFEn0qgTaWhyFUQamhgLXrI0SmR6nmysLBtrTJHCsMtLnsvDE0UKsygybZcInc7/EtNwHcwf0XENkyYm8484ywy/HX1mkoQ5MWyX3HCx3ELsMJLY9hpgxQ0XK4C1bdNrCdlcmDT1A4C5ERo0QdcRZieub7aLFJHmgBFEZw/pkqX5SIKTFNQok91tC7C/7RLV6eOMxbgHCHhvaiRrd50EedcEkQKAefPc0ATDNACIDN8XHQRpiGrTj5iHoje16dvOO7xy8dP1waEJ2n78JYQwp0/fRoXlMy/EYl0ew8b8yI0iuqZCNL20vdLpd39v4rTojaijQjnakDqQlDPotpqebx2kcbLxIJSIAAAAAElFTkSuQmCC';
