@@ -3,7 +3,7 @@
 // @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
 // @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。
-// @version      1.0.5.6
+// @version      1.0.5.7
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
@@ -752,15 +752,9 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       position: fixed;
       inset: 0;
       z-index: 2000000;
-      background: transparent;
+      background: var(--mw-bg, #fff);
       overflow: hidden;
-      pointer-events: none;
     }
-
-    /* 方案2：不移动 React 的 #root；Excel 仅作为顶部/底部覆盖层。 */
-    .mw-excel-skin-active #mw-excel-fullscreen .hld__excel-header,
-    .mw-excel-skin-active #mw-excel-fullscreen .hld__excel-footer { pointer-events: auto; }
-    .mw-excel-skin-active #mw-excel-game-area { background: transparent !important; pointer-events: none; }
 
     /* ★ 修复弹窗被Excel容器盖住：MUI Popper/Tooltip 挂在 body 上 */
     .mw-excel-skin-active .MuiPopper-root,
@@ -775,6 +769,11 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     }
 
     /* ★ 游戏 Excel 皮肤 */
+    .mw-excel-skin-active #root {
+      width: calc(100% - 50px) !important;
+      height: 100% !important;
+      margin-left: 50px !important;
+    }
     .mw-excel-skin-active #root,
     .mw-excel-skin-active #root *:not(img):not(svg):not(canvas):not(video) {
       background-color: var(--mw-bg, transparent) !important;
@@ -934,18 +933,6 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     .mw-excel-skin-active .GamePage_chatPanel__mVaVt {
       background: var(--mw-bg, #fff) !important;
       border: 2px solid #808080 !important;
-      min-width: 0 !important;
-      min-height: 0 !important;
-      max-width: none !important;
-      max-height: none !important;
-    }
-    /* Excel 覆盖层下仍允许游戏原生分栏拖拽。 */
-    .mw-excel-skin-active #root .gutter,
-    .mw-excel-skin-active #root .gutter-horizontal,
-    .mw-excel-skin-active #root .gutter-vertical {
-      pointer-events: auto !important;
-      z-index: 2100001 !important;
-      touch-action: none !important;
     }
     .mw-excel-skin-active [class*="ChatMessage_chatMessage"] {
       border-bottom: 1px solid #c0c0c0 !important;
@@ -3626,9 +3613,10 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
     excelContainer.querySelectorAll('.hld__excel-div').forEach(el => { el.style.display = 'block'; });
 
-    // 方案2：完全保留 React #root 的原生 DOM 位置和布局上下文。
-    excelContainer.style.setProperty('pointer-events', 'none', 'important');
-    excelContainer.style.setProperty('--mw-excel-header-height', `${headerHeight}px`);
+    // ★ 把游戏移入Excel外壳
+    const gameRoot = document.getElementById('root');
+    const gameArea = document.getElementById('mw-excel-game-area');
+    if (gameRoot && gameArea) gameArea.appendChild(gameRoot);
 
     document.documentElement.classList.add('mw-excel-skin-active');
 
@@ -5389,17 +5377,12 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     document.querySelectorAll('.mw-excel-item-name').forEach(el => el.remove());
     document.querySelectorAll('.mw-excel-svg-label').forEach(el => el.remove());
 
-    // 清理 1.0.5.3 及更早方案可能遗留在 #root 上的固定布局样式。
-    const staleRoot = document.getElementById('root');
-    if (staleRoot) {
-      const s = staleRoot.style;
-      if (s.position === 'fixed' && s.top && s.bottom === '24px' && s.width === '100%') {
-        ['position', 'top', 'right', 'bottom', 'left', 'width', 'height',
-         'margin', 'z-index', 'overflow'].forEach(name => s.removeProperty(name));
-      }
-    }
-
+    // 把 #root 移回 body
+    const gameRoot = document.getElementById('root');
     const container = document.getElementById('mw-excel-fullscreen');
+    if (gameRoot && container) {
+      document.body.insertBefore(gameRoot, container);
+    }
 
     document.documentElement.classList.remove('mw-excel-skin-active');
     document.documentElement.classList.remove('mw-theme-green','mw-theme-gray','mw-theme-pink','mw-theme-yellow');
