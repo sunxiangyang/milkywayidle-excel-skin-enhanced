@@ -752,9 +752,15 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       position: fixed;
       inset: 0;
       z-index: 2000000;
-      background: var(--mw-bg, #fff);
+      background: transparent;
       overflow: hidden;
+      pointer-events: none;
     }
+
+    /* 方案2：不移动 React 的 #root；Excel 仅作为顶部/底部覆盖层。 */
+    .mw-excel-skin-active #mw-excel-fullscreen .hld__excel-header,
+    .mw-excel-skin-active #mw-excel-fullscreen .hld__excel-footer { pointer-events: auto; }
+    .mw-excel-skin-active #mw-excel-game-area { background: transparent !important; pointer-events: none; }
 
     /* ★ 修复弹窗被Excel容器盖住：MUI Popper/Tooltip 挂在 body 上 */
     .mw-excel-skin-active .MuiPopper-root,
@@ -770,9 +776,17 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
     /* ★ 游戏 Excel 皮肤 */
     .mw-excel-skin-active #root {
-      width: calc(100% - 50px) !important;
-      height: 100% !important;
-      margin-left: 50px !important;
+      position: fixed !important;
+      top: var(--mw-excel-header-height, 125px) !important;
+      right: 0 !important;
+      bottom: 24px !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: auto !important;
+      margin: 0 !important;
+      /* 低于 Excel 外壳；外壳本身 pointer-events:none，内容区仍可交互 */
+      z-index: 1999999 !important;
+      overflow: auto !important;
     }
     .mw-excel-skin-active #root,
     .mw-excel-skin-active #root *:not(img):not(svg):not(canvas):not(video) {
@@ -1975,6 +1989,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     // Excel mode
     excelMode: getSetting('excelMode', false),
     excelTheme: getSetting('excelTheme', 'tencent'), // tencent, wps, office
+    excelRootStyle: null,
 
     // toggle button drag
     toggleBtnPos: getSetting('toggleBtnPos', null),
@@ -3613,10 +3628,24 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
     excelContainer.querySelectorAll('.hld__excel-div').forEach(el => { el.style.display = 'block'; });
 
-    // ★ 把游戏移入Excel外壳
+    // 方案2：保留 #root 在原有 DOM 父节点中，仅临时定位到 Excel 内容区。
     const gameRoot = document.getElementById('root');
     const gameArea = document.getElementById('mw-excel-game-area');
-    if (gameRoot && gameArea) gameArea.appendChild(gameRoot);
+    if (gameRoot) {
+      state.excelRootStyle = gameRoot.getAttribute('style') || '';
+      gameRoot.style.setProperty('position', 'fixed', 'important');
+      gameRoot.style.setProperty('top', `${headerHeight}px`, 'important');
+      gameRoot.style.setProperty('right', '0', 'important');
+      gameRoot.style.setProperty('bottom', '24px', 'important');
+      gameRoot.style.setProperty('left', '0', 'important');
+      gameRoot.style.setProperty('width', '100%', 'important');
+      gameRoot.style.setProperty('height', 'auto', 'important');
+      gameRoot.style.setProperty('margin', '0', 'important');
+      gameRoot.style.setProperty('z-index', '1999999', 'important');
+      gameRoot.style.setProperty('overflow', 'auto', 'important');
+    }
+    excelContainer.style.setProperty('pointer-events', 'none', 'important');
+    excelContainer.style.setProperty('--mw-excel-header-height', `${headerHeight}px`);
 
     document.documentElement.classList.add('mw-excel-skin-active');
 
@@ -5377,11 +5406,13 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     document.querySelectorAll('.mw-excel-item-name').forEach(el => el.remove());
     document.querySelectorAll('.mw-excel-svg-label').forEach(el => el.remove());
 
-    // 把 #root 移回 body
+    // 方案2未移动 #root；恢复进入 Excel 模式前保存的原始样式。
     const gameRoot = document.getElementById('root');
     const container = document.getElementById('mw-excel-fullscreen');
-    if (gameRoot && container) {
-      document.body.insertBefore(gameRoot, container);
+    if (gameRoot && state.excelRootStyle !== null) {
+      if (state.excelRootStyle) gameRoot.setAttribute('style', state.excelRootStyle);
+      else gameRoot.removeAttribute('style');
+      state.excelRootStyle = null;
     }
 
     document.documentElement.classList.remove('mw-excel-skin-active');
