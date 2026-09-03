@@ -2,8 +2,8 @@
 // @name         MilkyWayIdle - Excel换肤增强版
 // @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
-// @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。
-// @version      1.0.5.9
+// @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。摸鱼神器。
+// @version      1.0.5.10
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
