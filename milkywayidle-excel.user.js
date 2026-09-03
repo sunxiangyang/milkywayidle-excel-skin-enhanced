@@ -3,7 +3,7 @@
 // @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
 // @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。
-// @version      1.0.5.4
+// @version      1.0.5.5
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
@@ -934,6 +934,18 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     .mw-excel-skin-active .GamePage_chatPanel__mVaVt {
       background: var(--mw-bg, #fff) !important;
       border: 2px solid #808080 !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+      max-width: none !important;
+      max-height: none !important;
+    }
+    /* Excel 覆盖层下仍允许游戏原生分栏拖拽。 */
+    .mw-excel-skin-active #root .gutter,
+    .mw-excel-skin-active #root .gutter-horizontal,
+    .mw-excel-skin-active #root .gutter-vertical {
+      pointer-events: auto !important;
+      z-index: 2100001 !important;
+      touch-action: none !important;
     }
     .mw-excel-skin-active [class*="ChatMessage_chatMessage"] {
       border-bottom: 1px solid #c0c0c0 !important;
