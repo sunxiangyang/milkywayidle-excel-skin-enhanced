@@ -3663,6 +3663,10 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
         let textFixTimer = null;
         const textFixObserver = new MutationObserver(() => {
           if (!state.excelMode) return;
+          // 页面切换（例如从库存/技能切到装备）会由 React 重建物品节点。
+          // 这些节点通常在首次注入延迟之后才出现，因此每次根节点发生变化时
+          // 都要重新尝试注入名称，而不能只观察初始化时找到的库存容器。
+          if (state.hideInventoryIcons) injectItemNames();
           if (textFixTimer) clearTimeout(textFixTimer);
           textFixTimer = setTimeout(() => forceTextVisible(), 200);
         });
