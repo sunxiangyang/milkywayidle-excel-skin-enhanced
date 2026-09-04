@@ -3,7 +3,7 @@
 // @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
 // @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。摸鱼神器。
-// @version      1.0.5.10
+// @version      1.0.5.12
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
@@ -772,6 +772,61 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     .mw-excel-skin-active [class*="Modal_modalContent"],
     .mw-excel-skin-active [class*="Modal_modal"] {
       z-index: 2100000 !important;
+    }
+    /* 战斗页“出警/分赃”弹窗由第三方脚本以无 class/id 的 body 直属元素创建，
+       原始 z-index:10000 会被 Excel 全屏外壳(z-index:2000000)遮挡。 */
+    html.mw-excel-skin-active body >
+    div[style*="position: fixed"][style*="top: 50%"][style*="left: 50%"][style*="translate(-50%, -50%)"] {
+      z-index: 2100000 !important;
+    }
+    /* 第三方战斗统计弹窗没有 class/id，运行时会被标记为此类。 */
+    html.mw-excel-skin-active .mw-excel-external-dialog {
+      z-index: 2100000 !important;
+      background-color: var(--mw-bg, #f3f5f7) !important;
+      color: #30343b !important;
+      border: 1px solid #8c939d !important;
+      border-radius: 2px !important;
+      box-shadow: none !important;
+      font-family: 'Calibri', 'Segoe UI', Arial, sans-serif !important;
+    }
+    html.mw-excel-skin-active .mw-excel-external-dialog *,
+    html.mw-excel-skin-active .mw-excel-external-dialog [style*="color"] {
+      color: #30343b !important;
+      -webkit-text-fill-color: #30343b !important;
+      text-shadow: none !important;
+      box-shadow: none !important;
+      font-family: 'Calibri', 'Segoe UI', Arial, sans-serif !important;
+    }
+    html.mw-excel-skin-active .mw-excel-external-dialog [style*="background-color"],
+    html.mw-excel-skin-active .mw-excel-external-dialog [style*="background:"] {
+      background-color: var(--mw-bg, #f3f5f7) !important;
+      background-image: none !important;
+    }
+    html.mw-excel-skin-active .mw-excel-external-dialog [style*="border"] {
+      border-color: #b0b0b0 !important;
+      border-radius: 0 !important;
+    }
+    html.mw-excel-skin-active .mw-excel-external-dialog [style*="height: 0.0625rem"] {
+      background-color: #c7ccd3 !important;
+    }
+    html.mw-excel-skin-active .mw-excel-external-dialog h1,
+    html.mw-excel-skin-active .mw-excel-external-dialog h2,
+    html.mw-excel-skin-active .mw-excel-external-dialog h3 {
+      color: #1f2328 !important;
+      border-bottom: 1px solid #b0b0b0 !important;
+      padding-bottom: 4px !important;
+    }
+    html.mw-excel-skin-active .mw-excel-external-dialog button {
+      background: var(--mw-bg-dark, #e8ebef) !important;
+      color: #1f2328 !important;
+      border: 1px solid #8c939d !important;
+      border-radius: 2px !important;
+      min-height: 26px !important;
+      padding: 3px 12px !important;
+      cursor: pointer !important;
+    }
+    html.mw-excel-skin-active .mw-excel-external-dialog button:hover {
+      background: var(--mw-bg-hover, #e7eef7) !important;
     }
 
     /* ★ 游戏 Excel 皮肤 */
@@ -1981,6 +2036,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     // Excel mode
     excelMode: getSetting('excelMode', false),
     excelTheme: getSetting('excelTheme', 'tencent'), // tencent, wps, office
+    externalDialogObserver: null,
 
     // toggle button drag
     toggleBtnPos: getSetting('toggleBtnPos', null),
@@ -3459,6 +3515,65 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     }
   }
 
+  function isExternalCombatDialog(element) {
+    if (!(element instanceof HTMLElement) || element.parentElement !== document.body) return false;
+
+    const style = element.style;
+    const isCenteredOverlay = style.position === 'fixed'
+      && style.top === '50%'
+      && style.left === '50%'
+      && style.transform.includes('translate(-50%, -50%)');
+    if (!isCenteredOverlay) return false;
+
+    // “出警/分赃”统计窗没有 class/id，但使用稳定的深色背景和淡蓝边框。
+    const hasCombatDialogSignature = style.backgroundColor === 'rgb(19, 20, 25)'
+      && style.border.includes('rgb(152, 167, 233)');
+    const dialogText = element.textContent || '';
+    const hasCombatDialogContent = /总计价值|期望产值|总计经验|剩余时间|每分回(?:血|蓝)|\bEPH\b/.test(dialogText);
+    return hasCombatDialogSignature || hasCombatDialogContent;
+  }
+
+  function markExternalCombatDialogs(root = document.body) {
+    if (!root) return;
+
+    if (isExternalCombatDialog(root)) root.classList.add('mw-excel-external-dialog');
+    root.querySelectorAll?.(':scope > div').forEach(element => {
+      if (isExternalCombatDialog(element)) element.classList.add('mw-excel-external-dialog');
+    });
+  }
+
+  function startExternalDialogObserver() {
+    if (state.externalDialogObserver) state.externalDialogObserver.disconnect();
+    markExternalCombatDialogs();
+
+    state.externalDialogObserver = new MutationObserver(mutations => {
+      if (!state.excelMode) return;
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (!(node instanceof HTMLElement)) return;
+          if (isExternalCombatDialog(node)) node.classList.add('mw-excel-external-dialog');
+          // 某些插件会先挂载空节点，下一帧才写入样式和内容。
+          requestAnimationFrame(() => {
+            if (node.isConnected && isExternalCombatDialog(node)) {
+              node.classList.add('mw-excel-external-dialog');
+            }
+          });
+        });
+      });
+    });
+    state.externalDialogObserver.observe(document.body, { childList: true });
+  }
+
+  function stopExternalDialogObserver() {
+    if (state.externalDialogObserver) {
+      state.externalDialogObserver.disconnect();
+      state.externalDialogObserver = null;
+    }
+    document.querySelectorAll('.mw-excel-external-dialog').forEach(element => {
+      element.classList.remove('mw-excel-external-dialog');
+    });
+  }
+
   function createExcelInterface() {
     removeExcelInterface();
 
@@ -3631,6 +3746,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     // 应用图标显隐
     if (state.hideInventoryIcons) document.documentElement.classList.add('mw-hide-inv-icons');
     if (state.hideNavIcons) document.documentElement.classList.add('mw-hide-nav-icons');
+    startExternalDialogObserver();
 
     // 创建全局浮层行号条（从 headerPanel 顶部开始，覆盖整个内容区）
     createRowGutter();
@@ -5373,6 +5489,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
   }
 
   function removeExcelInterface() {
+    stopExternalDialogObserver();
     // 清理浮层行号条
     removeRowGutter();
     // 清理物品名称注入
