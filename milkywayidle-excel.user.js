@@ -3,7 +3,7 @@
 // @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
 // @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。摸鱼神器。
-// @version      1.0.5.12
+// @version      1.0.5.13
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
@@ -778,6 +778,25 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     html.mw-excel-skin-active body >
     div[style*="position: fixed"][style*="top: 50%"][style*="left: 50%"][style*="translate(-50%, -50%)"] {
       z-index: 2100000 !important;
+    }
+    /* 康康运气的 TabbedPopup 使用 class 定义 fixed/top/left，
+       这些属性不在 style 属性中，无法被上面的通用选择器匹配。
+       它挂在 body 下，必须明确抬到 Excel 全屏容器之上。 */
+    html.mw-excel-skin-active body > .lll_popup_root,
+    html.mw-excel-skin-active body > .lll_plainPopup_root {
+      z-index: 2100000 !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+    }
+    /* 统计/出警/分赃控件由第三方脚本动态插入，保持在 Excel 游戏区内可见可点。 */
+    html.mw-excel-skin-active #root .lll_btn_battleDropAnalyzer,
+    html.mw-excel-skin-active #root .lll_Button_battlePlayerFood__custom,
+    html.mw-excel-skin-active #root .lll_Button_battlePlayerLoot__custom {
+      position: relative !important;
+      z-index: 2000010 !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+      opacity: 1 !important;
     }
     /* 第三方战斗统计弹窗没有 class/id，运行时会被标记为此类。 */
     html.mw-excel-skin-active .mw-excel-external-dialog {
