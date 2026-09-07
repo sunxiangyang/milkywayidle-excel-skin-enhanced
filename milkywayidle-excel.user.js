@@ -3,7 +3,7 @@
 // @name:zh-CN   MilkyWayIdle - Excel换肤增强版
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
 // @description  游戏界面右下角按钮启动。快捷键alt + I (MacOS: cmd + I)切换为Excel模式。支持多种配色和图标显隐。摸鱼神器。
-// @version      1.0.5.13
+// @version      1.0.5.14
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
@@ -15,16 +15,10 @@
 // @run-at       document-idle
 //
 // @grant        GM_addStyle
-// @grant        GM_xmlhttpRequest
-// @grant        GM_setValue
-// @grant        GM_getValue
-// @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/jquery/3.4.0/jquery.min.js#sha512=Pa4Jto+LuCGBHy2/POQEbTh0reuoiEXQWXGn8S7aRlhcwpVkO8+4uoZVSOqUjdCsE+77oygfu2Tl+7qGHGIWsw==
-// @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/spectrum/1.8.0/spectrum.min.js#sha512=Bx3FZ9S4XKYq5P1Yxfqp36JifotqAAAl5eotNaGWE1zSSLifBZlbKExLh2NKHA4CTlqHap7xdFzo39W+CTKrWQ==
-// @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/localforage/1.10.0/localforage.min.js#sha512=+BMamP0e7wn39JGL8nKAZ3yAQT2dL5oaXWr4ZYlTGkKOaoXM/Yj7c4oy50Ngz5yoUutAG17flueD4F6QpTlPng==
-// @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/echarts/5.3.0/echarts.min.js#sha512=dvHO84j/D1YX7AWkAPC/qwRTfEgWRHhI3n7J5EAqMwm4r426sTkcOs6OmqCtmkg0QXNKtiFa67Tp77JWCRRINg==
 
 // @downloadURL https://raw.githubusercontent.com/sunxiangyang/milkywayidle-excel-skin-enhanced/main/milkywayidle-excel.user.js
 // @updateURL https://raw.githubusercontent.com/sunxiangyang/milkywayidle-excel-skin-enhanced/main/milkywayidle-excel.user.js
+
 // ==/UserScript==
 
 const IMG_EXCEL_ICON = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAt1BMVEUAAABNw4BOxH9NxH9DtHFNxH9PxoJIv3tNxH5QxoFOxX9Nw4BQxoFAr21HuXdOxYBJvHlOxH////9SxYI8qGhOxX86pGZQx4FGwnpCwHdLw304vW/i9upRyYM1u20yu2vR795CsG8vumlIunc2vG7P79w/v3Tb8+Xu+fKm4r5XyIY7vnI5omTW8eEpuGXF7Na86c+E1qZdyotKwXtHuXZBrm4ftF3w+vTm9+6+6dC358ud3rhnzJFRjt3CAAAAEXRSTlMAcPyPS+QQVfiiYSshS/OlZtHVkl8AAAFjSURBVEjHzdbXcoMwEAVQ2wnGNQm7BoNccAhgintL/f/vigRhNGEgq7dwH4CXM6C7w0itxqc7uKvKo14rhppRFXP6PK4Ro55ZQ67WffVX9StB9pbNpNLoWj2xJpWm3fmTSKNOpFEn0qgTaWhyFUQamhgLXrI0SmR6nmysLBtrTJHCsMtLnsvDE0UKsygybZcInc7/EtNwHcwf0XENkyYm8484ywy/HX1mkoQ5MWyX3HCx3ELsMJLY9hpgxQ0XK4C1bdNrCdlcmDT1A4C5ERo0QdcRZieub7aLFJHmgBFEZw/pkqX5SIKTFNQok91tC7C/7RLV6eOMxbgHCHhvaiRrd50EedcEkQKAefPc0ATDNACIDN8XHQRpiGrTj5iHoje16dvOO7xy8dP1waEJ2n78JYQwp0/fRoXlMy/EYl0ew8b8yI0iuqZCNL20vdLpd39v4rTojaijQjnakDqQlDPotpqebx2kcbLxIJSIAAAAAElFTkSuQmCC';
@@ -583,21 +577,21 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     }
 
     /* Game link container adjustments */
-    .mw-ide-msg .ChatMessage_linkContainer__18Kv3 {
+    .mw-ide-msg [class*="ChatMessage_linkContainer__"] {
       display: inline-block;
       vertical-align: baseline;
       margin: 0 2px;
     }
 
     /* Ensure game link icons scale with font size */
-    .mw-ide-msg .Icon_icon__2LtL_ {
+    .mw-ide-msg [class*="Icon_icon__"] {
       width: calc(var(--mw-ide-font-size) * 1.2) !important;
       height: calc(var(--mw-ide-font-size) * 1.2) !important;
       vertical-align: middle;
     }
 
     /* Ensure game link elements stay inline */
-    .mw-ide-msg .ChatMessage_linkContainer__18Kv3 * {
+    .mw-ide-msg [class*="ChatMessage_linkContainer__"] * {
       vertical-align: middle;
     }
 
@@ -634,6 +628,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     }
 
     .mw-image-fallback {
+      display: none;
       color: #60a5fa;
       text-decoration: underline;
       font-size: calc(var(--mw-ide-font-size) * 0.9);
@@ -725,23 +720,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       opacity: .7;
     }
 
-    /* Upload status styles */
-    .upload-status {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 10px 15px;
-      background: #4caf50;
-      color: #fff;
-      border-radius: 4px;
-      z-index: 10000;
-      box-shadow: 0 2px 10px rgba(0,0,0,.2);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "JetBrains Mono", monospace;
-      font-size: 12px;
-    }
-    .upload-status.error {
-      background: #f44336;
-    }
+
 
   `);
 
@@ -894,12 +873,12 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       height: 0 !important;
       overflow: hidden !important;
     }
-    .mw-excel-skin-active .GamePage_gamePage__ixiPl,
-    .mw-excel-skin-active .App_app__3vFLV {
+    .mw-excel-skin-active [class*="GamePage_gamePage__"],
+    .mw-excel-skin-active [class*="App_app__"] {
       background: var(--mw-bg, #fff) !important;
     }
     /* 保留游戏原版顶栏（角色头像、buff条、活动进度），加 Excel 网格底纹 */
-    html.mw-excel-skin-active #root .GamePage_headerPanel__1T_cA {
+    html.mw-excel-skin-active #root [class*="GamePage_headerPanel__"] {
       background-color: var(--mw-bg, #fff) !important;
       background-image:
         repeating-linear-gradient(to right,  transparent 0 63px, #c7ccd3 63px 64px),
@@ -909,34 +888,34 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       background-position: 0 0, 0 0 !important;
     }
     /* headerPanel 所有子 div 透明，露出父级的网格 */
-    html.mw-excel-skin-active #root .GamePage_headerPanel__1T_cA div {
+    html.mw-excel-skin-active #root [class*="GamePage_headerPanel__"] div {
       background-color: transparent !important;
       background-image: none !important;
     }
     /* 但进度条填充部分（已完成的进度）需要保留原色 */
-    html.mw-excel-skin-active #root .GamePage_headerPanel__1T_cA [class*="progress"] > *,
-    html.mw-excel-skin-active #root .GamePage_headerPanel__1T_cA [class*="Progress"] > *,
-    html.mw-excel-skin-active #root .GamePage_headerPanel__1T_cA [class*="bar"] > *,
-    html.mw-excel-skin-active #root .GamePage_headerPanel__1T_cA [class*="Bar"] > * {
+    html.mw-excel-skin-active #root [class*="GamePage_headerPanel__"] [class*="progress"] > *,
+    html.mw-excel-skin-active #root [class*="GamePage_headerPanel__"] [class*="Progress"] > *,
+    html.mw-excel-skin-active #root [class*="GamePage_headerPanel__"] [class*="bar"] > *,
+    html.mw-excel-skin-active #root [class*="GamePage_headerPanel__"] [class*="Bar"] > * {
       background-color: revert !important;
       background-image: revert !important;
     }
-    .mw-excel-skin-active .GamePage_gamePanel__3uNKN {
+    .mw-excel-skin-active [class*="GamePage_gamePanel__"] {
       height: 100% !important;
       background: var(--mw-bg, #fff) !important;
     }
 
     /* 左侧导航栏 — 行号列 */
-    .mw-excel-skin-active .NavigationBar_navigationBarContainer__18vsw,
-    .mw-excel-skin-active .NavigationBar_navigationBar__1gRln,
-    .mw-excel-skin-active .NavigationBar_navigationLinks__1XSSb {
+    .mw-excel-skin-active [class*="NavigationBar_navigationBarContainer__"],
+    .mw-excel-skin-active [class*="NavigationBar_navigationBar__"],
+    .mw-excel-skin-active [class*="NavigationBar_navigationLinks__"] {
       background: var(--mw-bg-dark, #f0f0f0) !important;
       border-right: 2px solid #a0a0a0 !important;
     }
-    .mw-excel-skin-active .NavigationBar_navigationLinks__1XSSb {
+    .mw-excel-skin-active [class*="NavigationBar_navigationLinks__"] {
       counter-reset: mw-excel-row !important;
     }
-    .mw-excel-skin-active .NavigationBar_navigationLinks__1XSSb > * {
+    .mw-excel-skin-active [class*="NavigationBar_navigationLinks__"] > * {
       border-bottom: 1px solid #b0b0b0 !important;
       border-top: none !important;
       font-size: 11px !important;
@@ -944,58 +923,58 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       counter-increment: mw-excel-row !important;
     }
     /* 隐藏导航图标时：紧凑 padding */
-    .mw-excel-skin-active.mw-hide-nav-icons .NavigationBar_navigationLinks__1XSSb > * {
+    .mw-excel-skin-active.mw-hide-nav-icons [class*="NavigationBar_navigationLinks__"] > * {
       padding: 2px 4px !important;
     }
     /* 显示导航图标时 */
-    .mw-excel-skin-active:not(.mw-hide-nav-icons) .NavigationBar_navigationLinks__1XSSb > * {
+    .mw-excel-skin-active:not(.mw-hide-nav-icons) [class*="NavigationBar_navigationLinks__"] > * {
       padding: 1px 4px !important;
       font-size: 12px !important;
       overflow: visible !important;
     }
     /* 显示导航图标时：确保图标本身可见且尺寸合理（不动 display） */
-    .mw-excel-skin-active:not(.mw-hide-nav-icons) .NavigationBar_navigationLinks__1XSSb > * svg,
-    .mw-excel-skin-active:not(.mw-hide-nav-icons) .NavigationBar_navigationLinks__1XSSb > * img {
+    .mw-excel-skin-active:not(.mw-hide-nav-icons) [class*="NavigationBar_navigationLinks__"] > * svg,
+    .mw-excel-skin-active:not(.mw-hide-nav-icons) [class*="NavigationBar_navigationLinks__"] > * img {
       visibility: visible !important;
       opacity: 1 !important;
       max-width: 16px !important;
       max-height: 16px !important;
     }
     /* 行号伪元素：已经由全局浮层 #mw-row-gutter 提供，导航栏自己的 ::before 禁用 */
-    .mw-excel-skin-active .NavigationBar_navigationLinks__1XSSb > *::before {
+    .mw-excel-skin-active [class*="NavigationBar_navigationLinks__"] > *::before {
       content: none !important;
       display: none !important;
     }
     /* ★ 隐藏左侧导航栏里的图标（可切换） */
-    .mw-excel-skin-active.mw-hide-nav-icons .NavigationBar_navigationLinks__1XSSb > * svg,
-    .mw-excel-skin-active.mw-hide-nav-icons .NavigationBar_navigationLinks__1XSSb > * img,
-    .mw-excel-skin-active.mw-hide-nav-icons .NavigationBar_navigationLinks__1XSSb > * [class*="Icon"],
-    .mw-excel-skin-active.mw-hide-nav-icons .NavigationBar_navigationLinks__1XSSb > * [class*="icon"] {
+    .mw-excel-skin-active.mw-hide-nav-icons [class*="NavigationBar_navigationLinks__"] > * svg,
+    .mw-excel-skin-active.mw-hide-nav-icons [class*="NavigationBar_navigationLinks__"] > * img,
+    .mw-excel-skin-active.mw-hide-nav-icons [class*="NavigationBar_navigationLinks__"] > * [class*="Icon"],
+    .mw-excel-skin-active.mw-hide-nav-icons [class*="NavigationBar_navigationLinks__"] > * [class*="icon"] {
       display: none !important;
     }
     /* 隐藏 JS 添加的杂项前缀标记 */
-    .mw-excel-nav-junk {
+    .mw-excel-skin-active .mw-excel-nav-junk {
       display: none !important;
     }
 
     /* 大面板 — 合并单元格（粗外框+细内线） */
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 {
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] {
       background: var(--mw-bg, #fff) !important;
       border: 2px solid #808080 !important;
     }
-    .mw-excel-skin-active .MainPanel_mainPanel__Ex2Ir {
+    .mw-excel-skin-active [class*="MainPanel_mainPanel__"] {
       background: var(--mw-bg, #fff) !important;
       border: none !important;
       border-bottom: 2px solid #808080 !important;
     }
-    .mw-excel-skin-active .MainPanel_mainPanel__Ex2Ir > * {
+    .mw-excel-skin-active [class*="MainPanel_mainPanel__"] > * {
       border: 1px solid #c0c0c0 !important;
     }
-    .mw-excel-skin-active .GamePage_characterManagementPanel__3OYQL {
+    .mw-excel-skin-active [class*="GamePage_characterManagementPanel__"] {
       background: var(--mw-bg, #fff) !important;
       border: 2px solid #808080 !important;
     }
-    .mw-excel-skin-active .CharacterManagement_characterManagement__2PhvW > *,
+    .mw-excel-skin-active [class*="CharacterManagement_characterManagement__"] > *,
     .mw-excel-skin-active [class*="CharacterManagement_tabsComponentContainer"] > * {
       border: 1px solid #c0c0c0 !important;
     }
@@ -1010,7 +989,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       border-top: 2px solid #808080 !important;
       border-bottom: 2px solid #808080 !important;
     }
-    .mw-excel-skin-active .GamePage_chatPanel__mVaVt {
+    .mw-excel-skin-active [class*="GamePage_chatPanel__"] {
       background: var(--mw-bg, #fff) !important;
       border: 2px solid #808080 !important;
     }
@@ -1018,7 +997,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       border-bottom: 1px solid #c0c0c0 !important;
       padding: 1px 4px !important;
     }
-    .mw-excel-skin-active .GamePage_contentPanel__Zx4FH > * {
+    .mw-excel-skin-active [class*="GamePage_contentPanel__"] > * {
       border: 1px solid #b0b0b0 !important;
     }
     .mw-excel-skin-active #root button,
@@ -1042,7 +1021,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     .mw-excel-skin-active #root [class*="Progress"] > * {
       background: #a0a0a0 !important;
     }
-    .mw-excel-skin-active .GamePage_notifications__1xT_i {
+    .mw-excel-skin-active [class*="GamePage_notifications__"] {
       display: none !important;
     }
 
@@ -1151,18 +1130,18 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     .mw-excel-item-name.mw-name-lg { font-size: 12px !important; }
     /* ★ 修复游戏内渐变/透明文字在Excel皮肤下不可见的问题
        —— 作用范围仅限主面板(中间大区)与右侧角色面板，不波及左侧导航栏 */
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [class*="SkillActionDetail"],
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [class*="ActionTypeDetail"],
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [class*="_title"],
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [class*="_header"],
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [class*="panelTitle"],
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [class*="sectionTitle"],
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 h1,
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 h2,
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 h3,
-    .mw-excel-skin-active .GamePage_characterManagementPanel__3OYQL [class*="_title"],
-    .mw-excel-skin-active .GamePage_characterManagementPanel__3OYQL [class*="_header"],
-    .mw-excel-skin-active .GamePage_characterManagementPanel__3OYQL [class*="Inventory_label"] {
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [class*="SkillActionDetail"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [class*="ActionTypeDetail"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [class*="_title"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [class*="_header"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [class*="panelTitle"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [class*="sectionTitle"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] h1,
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] h2,
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] h3,
+    .mw-excel-skin-active [class*="GamePage_characterManagementPanel__"] [class*="_title"],
+    .mw-excel-skin-active [class*="GamePage_characterManagementPanel__"] [class*="_header"],
+    .mw-excel-skin-active [class*="GamePage_characterManagementPanel__"] [class*="Inventory_label"] {
       color: #000 !important;
       -webkit-text-fill-color: #000 !important;
       background-image: none !important;
@@ -1170,10 +1149,10 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       background-clip: border-box !important;
     }
     /* 对抗内联style的渐变文字（仅主面板+角色面板） */
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [style*="text-fill-color"],
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [style*="background-clip"],
-    .mw-excel-skin-active .GamePage_characterManagementPanel__3OYQL [style*="text-fill-color"],
-    .mw-excel-skin-active .GamePage_characterManagementPanel__3OYQL [style*="background-clip"] {
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [style*="text-fill-color"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [style*="background-clip"],
+    .mw-excel-skin-active [class*="GamePage_characterManagementPanel__"] [style*="text-fill-color"],
+    .mw-excel-skin-active [class*="GamePage_characterManagementPanel__"] [style*="background-clip"] {
       -webkit-text-fill-color: #000 !important;
       color: #000 !important;
       background-image: none !important;
@@ -1181,10 +1160,10 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       background-clip: border-box !important;
     }
     /* 主面板内的 tab 按钮 / 切换按钮 的渐变文字修复（含 Portal 弹窗，不限作用域） */
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 button,
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [role="tab"],
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [class*="_tab"],
-    .mw-excel-skin-active .GamePage_middlePanel__uDts7 [class*="Tab_"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] button,
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [role="tab"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [class*="_tab"],
+    .mw-excel-skin-active [class*="GamePage_middlePanel__"] [class*="Tab_"],
     .mw-excel-skin-active [class*="tabsComponent"],
     .mw-excel-skin-active [class*="tabsComponent"] *,
     .mw-excel-skin-active [class*="TabsComponent"],
@@ -1273,10 +1252,10 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       z-index: 2100000 !important;
     }
     /* 左侧导航栏图标隐藏（可切换） */
-    .mw-excel-skin-active.mw-hide-nav-icons .NavigationBar_navigationLinks__1XSSb > * > svg,
-    .mw-excel-skin-active.mw-hide-nav-icons .NavigationBar_navigationLinks__1XSSb > * > img,
-    .mw-excel-skin-active.mw-hide-nav-icons .NavigationBar_navigationLinks__1XSSb > * [class*="icon"],
-    .mw-excel-skin-active.mw-hide-nav-icons .NavigationBar_navigationLinks__1XSSb > * [class*="Icon"] {
+    .mw-excel-skin-active.mw-hide-nav-icons [class*="NavigationBar_navigationLinks__"] > * > svg,
+    .mw-excel-skin-active.mw-hide-nav-icons [class*="NavigationBar_navigationLinks__"] > * > img,
+    .mw-excel-skin-active.mw-hide-nav-icons [class*="NavigationBar_navigationLinks__"] > * [class*="icon"],
+    .mw-excel-skin-active.mw-hide-nav-icons [class*="NavigationBar_navigationLinks__"] > * [class*="Icon"] {
       display: none !important;
     }
 
@@ -2013,13 +1992,28 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     activeChannel: 'default',
 
     // restore original UI
-    chatPanelOriginalStyle: null,
+    // undefined = 尚未保存；null = 原本没有 style 属性；string = 原始 style
+    chatPanelOriginalStyle: undefined,
 
     // tab bindings
     tabInfoByChannel: new Map(), // channel -> { tabBtn }
 
     // observe only the ACTIVE panel
     activePanelObserver: null,
+
+    // Excel 模式对游戏 DOM 的临时修改，退出时用于完整还原
+    navJunkClassElements: new Set(),
+    navJunkTextOriginals: new Map(),
+    gameRootOriginalParent: null,
+    gameRootOriginalNextSibling: null,
+    bodyOverflowOriginal: undefined,
+    overlayDisplayOriginal: undefined,
+    toggleDisplayOriginal: undefined,
+
+    // Excel 模式生命周期内的异步任务
+    excelTimers: new Set(),
+    textFixObserver: null,
+    textFixTimer: null,
 
     // sidebar search
     filterText: '',
@@ -2074,8 +2068,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
   function readSelfIdFromPage() {
     // 1) 先锁定 Header 区域，避免撞到聊天消息里的 CharacterName_name__*
     const header =
-      document.querySelector('[class*="Header_name__"]') ||
-      document.querySelector('.Header_name__227rJ'); // 兼容你给的示例
+      document.querySelector('[class*="Header_name__"]'); // 兼容你给的示例
     if (!header) return '';
 
     // 2) 在 header 内部找角色名节点（class 会变，但必包含 CharacterName_name__ 前缀）
@@ -2099,15 +2092,13 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
     // 只观察 Header 区域即可（更轻，不会被聊天刷屏影响）
     const header =
-      document.querySelector('[class*="Header_name__"]') ||
-      document.querySelector('.Header_name__227rJ');
+      document.querySelector('[class*="Header_name__"]');
 
     if (!header) {
       // 如果 header 还没出现（React 延迟加载），退化成短轮询，出现后再切回 observer
       const t = setInterval(() => {
         const h =
-          document.querySelector('[class*="Header_name__"]') ||
-          document.querySelector('.Header_name__227rJ');
+          document.querySelector('[class*="Header_name__"]');
         if (!h) return;
 
         clearInterval(t);
@@ -2151,9 +2142,8 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       // The displayText might be truncated with "..." but we use the full URL from href
       return `<div class="mw-image-container">
         <a href="${fullUrl}" target="_blank" rel="noreferrer noopener nofollow" class="mw-image-link">
-          <img src="${fullUrl}" alt="Image" class="mw-embedded-image" loading="lazy"
-               onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
-          <span class="mw-image-fallback" style="display:none;">${displayText}</span>
+          <img src="${fullUrl}" alt="Image" class="mw-embedded-image" loading="lazy" />
+          <span class="mw-image-fallback">${displayText}</span>
         </a>
       </div>`;
     });
@@ -2177,9 +2167,8 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       // Create image element with the full URL from href attribute
       return `<div class="mw-image-container">
         <a href="${fullUrl}" target="_blank" rel="noreferrer noopener nofollow" class="mw-image-link">
-          <img src="${fullUrl}" alt="Image" class="mw-embedded-image" loading="lazy"
-               onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
-          <span class="mw-image-fallback" style="display:none;">[图片]</span>
+          <img src="${fullUrl}" alt="Image" class="mw-embedded-image" loading="lazy" />
+          <span class="mw-image-fallback">[图片]</span>
         </a>
       </div>`;
     });
@@ -2196,9 +2185,8 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
         return `<div class="mw-image-container">
           <a href="${url}" target="_blank" rel="noreferrer noopener nofollow" class="mw-image-link">
-            <img src="${url}" alt="Image" class="mw-embedded-image" loading="lazy"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
-            <span class="mw-image-fallback" style="display:none;">${url}</span>
+            <img src="${url}" alt="Image" class="mw-embedded-image" loading="lazy" />
+            <span class="mw-image-fallback">${url}</span>
           </a>
         </div>`;
       });
@@ -2209,15 +2197,43 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
   function highlightMentions(safeHtmlText) {
     const me = (state.selfId || '').trim();
-    if (!me) return safeHtmlText;
+    if (!me || !safeHtmlText) return safeHtmlText;
 
     const escapedMe = me.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`(^|[\\s（(【\\[“"'，,。.!?;:])(@${escapedMe})(?=$|[^\\w\\u4e00-\\u9fa5-])`, 'g');
 
-    const re = new RegExp(`(^|[\\s>（(【\\[“"'，,。.!?;:])(@${escapedMe})(?=$|[^\\w\\u4e00-\\u9fa5-])`, 'g');
+    const container = document.createElement('div');
+    container.innerHTML = safeHtmlText;
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+    const textNodes = [];
+    let node;
+    while ((node = walker.nextNode())) textNodes.push(node);
 
-    return safeHtmlText.replace(re, (m, p1, tag) => {
-      return `${p1}<span class="mw-mention">${tag}</span>`;
+    textNodes.forEach(textNode => {
+      const text = textNode.nodeValue || '';
+      re.lastIndex = 0;
+      let match;
+      let lastIndex = 0;
+      let changed = false;
+      const frag = document.createDocumentFragment();
+
+      while ((match = re.exec(text))) {
+        changed = true;
+        frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index) + match[1]));
+        const span = document.createElement('span');
+        span.className = 'mw-mention';
+        span.textContent = match[2];
+        frag.appendChild(span);
+        lastIndex = re.lastIndex;
+      }
+
+      if (changed) {
+        frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+        textNode.replaceWith(frag);
+      }
     });
+
+    return container.innerHTML;
   }
 
   function isNearBottom(el, thresholdPx = 80) {
@@ -2746,7 +2762,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     clone.querySelector('[class*="name"]')?.remove();
 
     // Check if there are game links in the message
-    const hasGameLinks = clone.querySelector('.ChatMessage_linkContainer__18Kv3');
+    const hasGameLinks = clone.querySelector('[class*="ChatMessage_linkContainer__"]');
 
     // Check if there are image links (chat-img class)
     const hasImageLinks = clone.querySelector('a.chat-img') || clone.querySelector('a[class*="chat-img"]');
@@ -2953,6 +2969,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     body.appendChild(frag);
     state.renderedCount.set(ch, store.lines.length);
 
+    bindImageFallbackEvents(body);
     // 确保用户名点击事件已绑定
     bindUsernameClickEvents(body);
     // 确保消息双击事件已绑定
@@ -2972,12 +2989,25 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     body.innerHTML = store?.lines.join('') || '';
     state.renderedCount.set(ch, store?.lines.length || 0);
 
+    bindImageFallbackEvents(body);
     // 确保用户名点击事件已绑定
     bindUsernameClickEvents(body);
     // 确保消息双击事件已绑定
     bindMessageDoubleClickEvents(body);
 
     if (CFG.autoScroll) body.scrollTop = body.scrollHeight;
+  }
+
+  function bindImageFallbackEvents(body) {
+    if (!body || body.__mwImageFallbackBound) return;
+    body.__mwImageFallbackBound = true;
+    body.addEventListener('error', (e) => {
+      const img = e.target;
+      if (!(img instanceof HTMLImageElement) || !img.classList.contains('mw-embedded-image')) return;
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback?.classList.contains('mw-image-fallback')) fallback.style.display = 'inline';
+    }, true);
   }
 
   // 绑定用户名点击事件
@@ -3145,7 +3175,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
   /* ======= Keep original chat panel alive but offscreen ======= */
   function applyOffscreen(panel) {
     if (!panel) return;
-    if (state.chatPanelOriginalStyle === null) {
+    if (state.chatPanelOriginalStyle === undefined) {
       state.chatPanelOriginalStyle = panel.getAttribute('style'); // may be null
     }
     panel.style.position = 'fixed';
@@ -3159,11 +3189,11 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
   function restoreChatPanel(panel) {
     if (!panel) return;
-    if (state.chatPanelOriginalStyle === null) return;
+    if (state.chatPanelOriginalStyle === undefined) return;
     const old = state.chatPanelOriginalStyle;
     if (old === null) panel.removeAttribute('style');
     else panel.setAttribute('style', old);
-    state.chatPanelOriginalStyle = null;
+    state.chatPanelOriginalStyle = undefined;
   }
 
   /* ======= Local input -> sync to original input on send ======= */
@@ -3215,115 +3245,6 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     inputEl.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
-  function uploadAndInsertImage(blob, inputElement) {
-    // 保存原始状态
-    const originalPlaceholder = inputElement.placeholder;
-    const originalDisabled = inputElement.disabled;
-    const sendBtn = DOM.sendBtn;
-    const originalSendDisabled = sendBtn ? sendBtn.disabled : false;
-
-    // 设置上传状态
-    inputElement.placeholder = 'Uploading image...';
-    inputElement.disabled = true;
-    inputElement.style.opacity = '0.6';
-    inputElement.style.cursor = 'not-allowed';
-
-    // 禁用发送按钮
-    if (sendBtn) {
-      sendBtn.disabled = true;
-      sendBtn.style.opacity = '0.6';
-      sendBtn.style.cursor = 'not-allowed';
-    }
-
-    const statusDiv = document.createElement('div');
-    statusDiv.className = 'upload-status';
-    statusDiv.textContent = '正在上传图片...';
-    document.body.appendChild(statusDiv);
-
-    const boundary = '----WebKitFormBoundary' + Math.random().toString(36).substring(2);
-    const formParts = [];
-
-    function appendFile(name, file) {
-      formParts.push(`--${boundary}\r\nContent-Disposition: form-data; name="${name}"; filename="${file.name}"\r\nContent-Type: ${file.type}\r\n\r\n`);
-      formParts.push(file);
-      formParts.push('\r\n');
-    }
-    appendFile('file', blob);
-    formParts.push(`--${boundary}--\r\n`);
-    const bodyBlob = new Blob(formParts);
-
-    function restoreInputState() {
-      // 恢复输入框状态
-      inputElement.placeholder = originalPlaceholder;
-      inputElement.disabled = originalDisabled;
-      inputElement.style.opacity = '';
-      inputElement.style.cursor = '';
-
-      // 恢复发送按钮状态
-      if (sendBtn) {
-        sendBtn.disabled = originalSendDisabled;
-        sendBtn.style.opacity = '';
-        sendBtn.style.cursor = '';
-      }
-    }
-
-    GM_xmlhttpRequest({
-      method: 'POST',
-      url: 'https://tupian.li/api/v1/upload',
-      data: bodyBlob,
-      headers: {
-        'Content-Type': `multipart/form-data; boundary=${boundary}`,
-        'Accept': 'application/json'
-      },
-      binary: true,
-      onload: function(response) {
-        statusDiv.remove();
-        restoreInputState();
-
-        if (response.status === 200) {
-          try {
-            const result = JSON.parse(response.responseText);
-            if (result.status) {
-              const url = result.data.links.url;
-
-              const currentValue = inputElement.value;
-              const newValue = currentValue ? `${currentValue} ${url}` : url;
-
-              inputElement.value = newValue;
-              inputElement.dispatchEvent(new Event('input', { bubbles: true }));
-              inputElement.focus();
-
-              const successDiv = document.createElement('div');
-              successDiv.className = 'upload-status';
-              successDiv.textContent = '上传成功！';
-              document.body.appendChild(successDiv);
-              setTimeout(() => successDiv.remove(), 2000);
-            } else {
-              throw new Error(result.message || '上传失败');
-            }
-          } catch (e) {
-            showUploadError('解析失败: ' + e.message);
-          }
-        } else {
-          showUploadError('服务器错误: ' + response.status);
-        }
-      },
-      onerror: function(error) {
-        statusDiv.remove();
-        restoreInputState();
-        showUploadError('上传失败: ' + error.statusText);
-      }
-    });
-
-    function showUploadError(message) {
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'upload-status error';
-      errorDiv.textContent = message;
-      document.body.appendChild(errorDiv);
-      setTimeout(() => errorDiv.remove(), 3000);
-      console.error(message);
-    }
-  }
 
   function doSend() {
     const local = $('#' + CFG.localInputId);
@@ -3409,7 +3330,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     // 监听导航栏 DOM 变化（缩小监听范围，避免全局扫描）
     if (!state._rowGutterObserver) {
       state._rowGutterObserver = new MutationObserver(scheduleRefreshRowGutter);
-      const target = document.querySelector('.NavigationBar_navigationLinks__1XSSb') || document.getElementById('root');
+      const target = document.querySelector('[class*="NavigationBar_navigationLinks__"]') || document.getElementById('root');
       if (target) state._rowGutterObserver.observe(target, { childList: true, subtree: false });
     }
     window.addEventListener('resize', scheduleRefreshRowGutter);
@@ -3446,8 +3367,8 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       cells.push({ top: i * ROW_H, height: ROW_H, lineHeight: ROW_H, text: String(i + 1), frozen: true });
     }
 
-    const navItems = document.querySelectorAll('.NavigationBar_navigationLinks__1XSSb > *');
-    const navBounds = document.querySelector('.NavigationBar_navigationLinks__1XSSb');
+    const navItems = document.querySelectorAll('[class*="NavigationBar_navigationLinks__"] > *');
+    const navBounds = document.querySelector('[class*="NavigationBar_navigationLinks__"]');
     let minY = gTop, maxY = gBottom;
     if (navBounds) {
       const br = navBounds.getBoundingClientRect();
@@ -3591,6 +3512,30 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     document.querySelectorAll('.mw-excel-external-dialog').forEach(element => {
       element.classList.remove('mw-excel-external-dialog');
     });
+  }
+
+  function scheduleExcelTask(fn, delay) {
+    const timerId = setTimeout(() => {
+      state.excelTimers.delete(timerId);
+      if (!state.excelMode) return;
+      fn();
+    }, delay);
+    state.excelTimers.add(timerId);
+    return timerId;
+  }
+
+  function clearExcelAsyncWork() {
+    state.excelTimers.forEach(timerId => clearTimeout(timerId));
+    state.excelTimers.clear();
+
+    if (state.textFixTimer) {
+      clearTimeout(state.textFixTimer);
+      state.textFixTimer = null;
+    }
+    if (state.textFixObserver) {
+      try { state.textFixObserver.disconnect(); } catch { }
+      state.textFixObserver = null;
+    }
   }
 
   function createExcelInterface() {
@@ -3756,7 +3701,11 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     // ★ 把游戏移入Excel外壳
     const gameRoot = document.getElementById('root');
     const gameArea = document.getElementById('mw-excel-game-area');
-    if (gameRoot && gameArea) gameArea.appendChild(gameRoot);
+    if (gameRoot && gameArea) {
+      state.gameRootOriginalParent = gameRoot.parentNode;
+      state.gameRootOriginalNextSibling = gameRoot.nextSibling;
+      gameArea.appendChild(gameRoot);
+    }
 
     document.documentElement.classList.add('mw-excel-skin-active');
 
@@ -3772,19 +3721,26 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
     // 隐藏IDE overlay和toggle按钮
     const overlay = document.getElementById(CFG.overlayId);
-    if (overlay) overlay.style.display = 'none';
+    if (overlay) {
+      state.overlayDisplayOriginal = overlay.style.display;
+      overlay.style.display = 'none';
+    }
     const toggleBtn = document.getElementById(CFG.toggleBtnId);
-    if (toggleBtn) toggleBtn.style.display = 'none';
+    if (toggleBtn) {
+      state.toggleDisplayOriginal = toggleBtn.style.display;
+      toggleBtn.style.display = 'none';
+    }
+    state.bodyOverflowOriginal = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     // ★ 注入物品中文名称（放在iconContainer内，替代svg）
-    if (state.hideInventoryIcons) setTimeout(() => injectItemNames(), 300);
+    if (state.hideInventoryIcons) scheduleExcelTask(() => injectItemNames(), 300);
     // 清理导航栏内误暴露的杂项文本（Icon/navigationBar.xxx）
-    setTimeout(() => cleanNavBarJunk(), 300);
-    setTimeout(() => cleanNavBarJunk(), 1500);
+    scheduleExcelTask(() => cleanNavBarJunk(), 300);
+    scheduleExcelTask(() => cleanNavBarJunk(), 1500);
     // 强制修复不可见文字（延迟等React渲染完毕）
-    setTimeout(() => forceTextVisible(), 500);
-    setTimeout(() => forceTextVisible(), 1500);
+    scheduleExcelTask(() => forceTextVisible(), 500);
+    scheduleExcelTask(() => forceTextVisible(), 1500);
     // 持续监控库存变化
     if (!state._excelItemObserver) {
       state._excelItemObserver = new MutationObserver(() => {
@@ -3792,26 +3748,25 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
         if (state.excelMode) { forceTextVisible(); cleanNavBarJunk(); }
       });
     }
-    setTimeout(() => {
+    scheduleExcelTask(() => {
       const inv = document.querySelector('[class*="Inventory_items"]');
       if (inv && state._excelItemObserver && state.hideInventoryIcons) {
         state._excelItemObserver.observe(inv, { childList: true, subtree: true });
       }
       // 监听整个游戏区域变化，持续修复文字可见性（节流）
       const gameRoot = document.getElementById('root');
-      if (gameRoot && !gameRoot.__mwTextFixObserver) {
-        gameRoot.__mwTextFixObserver = true;
-        let textFixTimer = null;
-        const textFixObserver = new MutationObserver(() => {
+      if (gameRoot && !state.textFixObserver) {
+        state.textFixObserver = new MutationObserver(() => {
           if (!state.excelMode) return;
           // 页面切换（例如从库存/技能切到装备）会由 React 重建物品节点。
-          // 这些节点通常在首次注入延迟之后才出现，因此每次根节点发生变化时
-          // 都要重新尝试注入名称，而不能只观察初始化时找到的库存容器。
           if (state.hideInventoryIcons) injectItemNames();
-          if (textFixTimer) clearTimeout(textFixTimer);
-          textFixTimer = setTimeout(() => forceTextVisible(), 200);
+          if (state.textFixTimer) clearTimeout(state.textFixTimer);
+          state.textFixTimer = setTimeout(() => {
+            state.textFixTimer = null;
+            if (state.excelMode) forceTextVisible();
+          }, 200);
         });
-        textFixObserver.observe(gameRoot, { childList: true, subtree: true });
+        state.textFixObserver.observe(gameRoot, { childList: true, subtree: true });
       }
     }, 500);
 
@@ -4816,7 +4771,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
   // ★ 提取物品名称并放入iconContainer内替代svg
   // 清理左侧导航栏里意外暴露出来的杂项前缀文字节点（如 "Icon"、"navigationBar.xxx"）
   function cleanNavBarJunk() {
-    const nav = document.querySelector('.NavigationBar_navigationLinks__1XSSb')
+    const nav = document.querySelector('[class*="NavigationBar_navigationLinks__"]')
              || document.querySelector('[class*="navigationLinks"]');
     if (!nav) return;
     const walker = document.createTreeWalker(nav, NodeFilter.SHOW_TEXT, null);
@@ -4833,14 +4788,31 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
       }
     }
     toHide.forEach(textNode => {
-      // 优先把外层 span/div 隐藏；若文本节点直挂在 link item 上就只清空它
-      let p = textNode.parentElement;
+      // 优先只加临时 class；若必须清空直挂文本，则保存原值以便退出 Excel 时恢复。
+      const p = textNode.parentElement;
       if (p && p !== nav && (p.tagName === 'SPAN' || p.tagName === 'DIV' || p.tagName === 'I')) {
-        p.classList.add('mw-excel-nav-junk');
-      } else {
+        if (!p.classList.contains('mw-excel-nav-junk')) {
+          p.classList.add('mw-excel-nav-junk');
+          state.navJunkClassElements.add(p);
+        }
+      } else if (!state.navJunkTextOriginals.has(textNode)) {
+        state.navJunkTextOriginals.set(textNode, textNode.nodeValue);
         textNode.nodeValue = '';
       }
     });
+  }
+
+  function restoreNavBarJunk() {
+    state.navJunkClassElements.forEach(el => {
+      try { el.classList.remove('mw-excel-nav-junk'); } catch { }
+    });
+    state.navJunkClassElements.clear();
+
+    state.navJunkTextOriginals.forEach((originalText, textNode) => {
+      // 只恢复仍保持脚本清空状态的节点，避免覆盖 React 在此期间写入的新内容。
+      if (textNode && textNode.nodeValue === '') textNode.nodeValue = originalText;
+    });
+    state.navJunkTextOriginals.clear();
   }
 
   function injectItemNames() {
@@ -5074,6 +5046,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     inputElement.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         e.preventDefault();
+        e.stopPropagation(); // 不让 window 的全局 Escape 同时退出 Excel 模式
         inputElement.value = '';
         inputElement.blur(); // 失去焦点
       }
@@ -5508,6 +5481,8 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
   }
 
   function removeExcelInterface() {
+    clearExcelAsyncWork();
+    stopExcelChatAutoRefresh();
     stopExternalDialogObserver();
     // 清理浮层行号条
     removeRowGutter();
@@ -5518,13 +5493,22 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     }
     document.querySelectorAll('.mw-excel-item-name').forEach(el => el.remove());
     document.querySelectorAll('.mw-excel-svg-label').forEach(el => el.remove());
+    // 还原 Excel 模式期间临时隐藏的导航内容
+    restoreNavBarJunk();
 
-    // 把 #root 移回 body
+    // 把 #root 精确放回进入 Excel 前的父节点/兄弟节点位置
     const gameRoot = document.getElementById('root');
     const container = document.getElementById('mw-excel-fullscreen');
-    if (gameRoot && container) {
+    if (gameRoot && state.gameRootOriginalParent) {
+      const parent = state.gameRootOriginalParent;
+      const next = state.gameRootOriginalNextSibling;
+      if (next && next.parentNode === parent) parent.insertBefore(gameRoot, next);
+      else parent.appendChild(gameRoot);
+    } else if (gameRoot && container) {
       document.body.insertBefore(gameRoot, container);
     }
+    state.gameRootOriginalParent = null;
+    state.gameRootOriginalNextSibling = null;
 
     document.documentElement.classList.remove('mw-excel-skin-active');
     document.documentElement.classList.remove('mw-theme-green','mw-theme-gray','mw-theme-pink','mw-theme-yellow');
@@ -5532,9 +5516,22 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     if (container) container.remove();
     document.querySelectorAll('.hld__excel-div').forEach(el => el.remove());
 
+    const overlay = document.getElementById(CFG.overlayId);
+    if (overlay && state.overlayDisplayOriginal !== undefined) {
+      overlay.style.display = state.overlayDisplayOriginal;
+    }
+    state.overlayDisplayOriginal = undefined;
+
     const toggleBtn = document.getElementById(CFG.toggleBtnId);
-    if (toggleBtn) toggleBtn.style.display = '';
-    document.body.style.overflow = '';
+    if (toggleBtn && state.toggleDisplayOriginal !== undefined) {
+      toggleBtn.style.display = state.toggleDisplayOriginal;
+    }
+    state.toggleDisplayOriginal = undefined;
+
+    if (state.bodyOverflowOriginal !== undefined) {
+      document.body.style.overflow = state.bodyOverflowOriginal;
+    }
+    state.bodyOverflowOriginal = undefined;
     // 移除MUI z-index修复
     const muiFix = document.getElementById('mw-excel-mui-fix');
     if (muiFix) muiFix.remove();
@@ -5810,7 +5807,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
 
       // 根据保存的状态自动进入Excel模式
       if (state.excelMode) {
-        setTimeout(() => {
+        scheduleExcelTask(() => {
           toggleExcelMode(true);
           // 更新按钮状态
           const excelBtn = document.querySelector('[data-action="excel-mode"]');
@@ -5916,7 +5913,7 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     console.log('[MW Excel Skin] v0.22.0 loaded');
 
     if (state.excelMode) {
-      setTimeout(() => {
+      scheduleExcelTask(() => {
         toggleExcelMode(true);
         setToggleText();
       }, 200);
