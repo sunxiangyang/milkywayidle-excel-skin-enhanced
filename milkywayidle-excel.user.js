@@ -2,8 +2,8 @@
 // @name         [银河奶牛] Excel摸鱼模式
 // @name:zh-CN   [银河奶牛] Excel摸鱼模式
 // @namespace    https://github.com/ailec0623/MilkyWayIdle-FullscreenIDEChat
-// @description  一键将游戏界面切换为 Excel 表格风格，支持多种配色、图标显隐、物品中文名称和表格聊天，让养牛更有上班的样子。
-// @version      1.0.5.15
+// @description  基于原作者的 Excel 换肤插件修改。一键将游戏界面切换为 Excel 表格风格，支持多种配色、图标显隐、物品中文名称和表格聊天，以熟悉的办公界面淡化游戏特征，方便低调摸鱼。
+// @version      1.0.5.16
 // @author       sintiky
 // @copyright    400BadRequest
 // @license      MIT
@@ -750,6 +750,14 @@ const CHINA_PROVINCE = ['北京', '天津', '上海', '重庆', '河北', '山�
     .mw-excel-skin-active [class*="Modal_modalContainer"],
     .mw-excel-skin-active [class*="Modal_modalContent"],
     .mw-excel-skin-active [class*="Modal_modal"] {
+      z-index: 2100000 !important;
+    }
+    /* 玩家资料使用独立的 SharableProfile，而非通用 Modal。
+       原始 absolute/z-index:1000 会落在 Excel 游戏区和工具栏下方。
+       仅提升外层容器，保留内部内容、滚动区和关闭按钮的原始层叠顺序。 */
+    html.mw-excel-skin-active [class*="SharableProfile_modalContainer__"] {
+      position: fixed !important;
+      inset: 0 !important;
       z-index: 2100000 !important;
     }
     /* 战斗页“出警/分赃”弹窗由第三方脚本以无 class/id 的 body 直属元素创建，
